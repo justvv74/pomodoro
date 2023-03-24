@@ -60,7 +60,7 @@ const deleteSession = async (sessionId) => {
 };
 
 app.all('*', function (req, res, next) {
-  res.header('Access-Control-Allow-Origin', 'http://localhost:3000/');
+  res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
   res.header('Vary', 'Origin');
   res.header('Access-Control-Allow-Methods', 'PUT, GET, POST, DELETE, OPTIONS');
   res.header('Access-Control-Allow-Headers', 'Content-Type');
@@ -94,11 +94,7 @@ app.post('/login', bodyParser.urlencoded({ extended: false }), async (req, res) 
     } else {
       console.log('success');
       const sessionId = await createSession(user.id);
-      res
-        .status(200)
-        // .header('Access-Control-Allow-Origin', 'http://localhost:3000/')
-        .cookie('sessionId', sessionId, { httpOnly: true })
-        .redirect('/pomidoro');
+      res.status(200).cookie('sessionId', sessionId, { httpOnly: true }).send(user.username);
     }
   } catch (err) {
     res.status(400).send(err.message);
@@ -106,6 +102,7 @@ app.post('/login', bodyParser.urlencoded({ extended: false }), async (req, res) 
 });
 
 app.get('/logout', auth(), async (req, res) => {
+  console.log('logout', req.cookies.sessionId);
   try {
     if (!req.user) {
       return req.sendStatus(401);
@@ -118,23 +115,13 @@ app.get('/logout', auth(), async (req, res) => {
   }
 });
 
-app.get('/pomidoro', auth(), (req, res) => {
-  console.log('pomidoro');
-  res
-    .header('Access-Control-Allow-Origin', 'http://localhost:3000/')
-    .send({
-      user: req.user,
-    })
-    .redirect('http://localhost:3000/pomidoro');
-});
+// app.get('/', auth(), (req, res) => {
+//   console.log('work `/`');
+//   res
+//     .status(200)
 
-app.get('/', auth(), (req, res) => {
-  console.log('work `/`');
-  res
-    .status(200)
-
-    .redirect('http://localhost:3000/');
-});
+//     .redirect('http://localhost:3000/');
+// });
 
 app.use((err, req, res, next) => {
   res.status(500).send(err.message);
