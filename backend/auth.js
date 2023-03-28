@@ -7,11 +7,11 @@ const knex = require('knex')({
     user: process.env.DB_USER,
     password: process.env.DB_PASSWORD,
   },
-  pool: { min: 0, max: 2 },
+  pool: { min: 0, max: 1 },
 });
 
 const findUserBySessionId = async (sessionId) => {
-  const session = await knex('t_sessions')
+  const session = await knex('pom_sessions')
     .select('user_id')
     .where({ session_id: sessionId })
     .limit(1)
@@ -21,7 +21,7 @@ const findUserBySessionId = async (sessionId) => {
     return;
   }
 
-  return knex('t_users')
+  return knex('pom_users')
     .select()
     .where({ id: session.user_id })
     .limit(1)
@@ -32,7 +32,6 @@ const auth = () => async (req, res, next) => {
   if (!req.cookies['sessionId']) {
     return next();
   }
-
   const user = await findUserBySessionId(req.cookies['sessionId']);
   req.user = user;
   req.sessionId = req.cookies['sessionId'];

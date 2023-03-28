@@ -27,17 +27,20 @@ app.use(express.json());
 app.use(cookieParser());
 
 const corsOptions = {
-  origin: '*',
+  origin: 'http://localhost:3000',
   credentials: true,
 };
 
 app.use(cors(corsOptions));
+app.use('/pomodoro', require('./pomodoro'));
+app.use('/settings', require('./settings'));
 
 const createUser = async (username, password) =>
-  await knex('t_users').insert({ username: username, password: hash(password) });
+  await knex('pom_users').insert({ username: username, password: hash(password) });
 
 const findUserByUsername = async (username) => {
-  return await knex('t_users')
+  console.log('findUserByUsername');
+  return await knex('pom_users')
     .select()
     .where({ username })
     .limit(1)
@@ -47,7 +50,7 @@ const findUserByUsername = async (username) => {
 const createSession = async (userId) => {
   const sessionId = nanoid();
 
-  await knex('t_sessions').insert({
+  await knex('pom_sessions').insert({
     user_id: userId,
     session_id: sessionId,
   });
@@ -56,7 +59,7 @@ const createSession = async (userId) => {
 };
 
 const deleteSession = async (sessionId) => {
-  await knex('t_sessions').where({ session_id: sessionId }).delete();
+  await knex('pom_sessions').where({ session_id: sessionId }).delete();
 };
 
 app.all('*', function (req, res, next) {
@@ -102,26 +105,31 @@ app.post('/login', bodyParser.urlencoded({ extended: false }), async (req, res) 
 });
 
 app.get('/logout', auth(), async (req, res) => {
-  console.log('logout', req.cookies.sessionId);
+  console.log('/logout', req.user, req.cookies);
   try {
     if (!req.user) {
       return req.sendStatus(401);
     }
 
     await deleteSession(req.sessionId);
-    res.clearCookie('sessionId').redirect('/');
+    res.clearCookie('sessionId').send('logout');
   } catch (err) {
     res.status(400).send(err.message);
   }
 });
 
-// app.get('/', auth(), (req, res) => {
-//   console.log('work `/`');
-//   res
-//     .status(200)
-
-//     .redirect('http://localhost:3000/');
-// });
+app.get('/user', auth(), (req, res) => {
+  try {
+    const user = req.user;
+    if (user) {
+      res.status(200).send(user.username);
+    } else {
+      res.status(401);
+    }
+  } catch (err) {
+    res.status(400).send(err.message);
+  }
+});
 
 app.use((err, req, res, next) => {
   res.status(500).send(err.message);
@@ -133,3 +141,5 @@ const port = process.env.PORT || 3001;
 app.listen(port, () => {
   console.log(`  Listening on http://localhost:${port}`);
 });
+
+exports.findUserByUsername = findUserByUsername;
