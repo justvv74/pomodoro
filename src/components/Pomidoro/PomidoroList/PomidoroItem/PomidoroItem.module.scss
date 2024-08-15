@@ -1,0 +1,111 @@
+@import '@styles/var';
+
+.pomidoroItem {
+    position: relative;
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid $greyE4;
+    padding: 5px 10px;
+
+    &first-child {
+        border-top: 1px solid $greyE4;
+        background-color: $greyF4;
+    }
+
+    &Pomidors {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-right: 10px;
+        border-radius: 100%;
+        border: 1px solid $greyC4;
+        width: 25px;
+        height: 25px;
+        line-height: 0;
+    }
+
+    &Descr {
+        margin-right: auto;
+    }
+
+    &MenuBox {
+        position: relative;
+        display: flex;
+    }
+
+    &MenuBtn {
+        z-index: 11;
+        position: relative;
+        padding: 10px 0 10px 10px;
+    }
+
+    &Btn {
+        z-index: 10;
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        opacity: 0.2;
+
+        &:focus {
+            outline: none;
+            background-color: $greyE4;
+        }
+
+        &:hover {
+            background-color: $greyC4;
+        }
+
+        &:active {
+            background-color: $purple;
+        }
+    }
+
+    &EditForm {
+        z-index: 11;
+        position: absolute;
+        top: 9px;
+        left: 27px;
+        display: flex;
+        align-items: center;
+        padding: 3px 5px;
+        /* height: 18px; */
+        width: 80%;
+
+        &Input {
+            flex: 1 1 0;
+            margin-right: 10px;
+            border: 1px solid $greyC4;
+            background-color: $white;
+
+            &:focus {
+                outline: 1px solid $green;
+            }
+        }
+
+        &Confirm {
+            line-height: 0;
+
+            & svg {
+                color: $green;
+            }
+
+            &:hover svg {
+                color: $darkGreen;
+            }
+        }
+
+        &Сancel {
+            line-height: 0;
+
+            & svg {
+                color: $red;
+            }
+
+            &:hover svg {
+                color: $darkRed;
+            }
+        }
+    }
+}

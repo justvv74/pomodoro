@@ -1,0 +1,201 @@
+@import '@styles/var';
+@import '@styles/mixins';
+
+.loginBox {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding: 150px 30px 30px;
+    width: 100%;
+    min-height: 100vh;
+    background-color: $red9F;
+
+    &Logo {
+        margin-bottom: 25px;
+    }
+
+    &FormBox {
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        gap: 25px;
+        margin-bottom: 228px;
+        border-radius: 10px;
+        padding: 25px 90px;
+        background-color: $darkRed;
+
+        &Title {
+            font-size: 25px;
+            line-height: 25px;
+            font-weight: 700;
+            color: $white;
+        }
+    }
+
+    &Form {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 40px;
+        width: 100%;
+    }
+
+    &InputBox {
+        position: relative;
+        width: 83%;
+
+        &Error {
+            position: absolute;
+            bottom: -20px;
+            font-size: 14px;
+            color: $purple;
+        }
+    }
+
+    &Input {
+        border: none;
+        border-radius: 10px;
+        padding: 19px 15px;
+        width: 100%;
+        height: 55px;
+        background-color: $white;
+
+        &:focus {
+            outline: none;
+            background-color: $blue;
+        }
+
+        &:hover {
+            background-color: $blue;
+        }
+
+        &:active {
+            background-color: $blue;
+        }
+
+        &:nth-child(2) {
+            margin-bottom: 30px;
+        }
+    }
+
+    &Btn {
+        border: 2px solid $green;
+        border-radius: 10px;
+        padding: 15px 46px;
+        width: 58%;
+        font-weight: 500;
+        color: $white;
+        background-color: $green;
+        transition-property: color, background-color, border-color;
+        transition-duration: 0.2s;
+        transition-timing-function: ease;
+
+        &:focus {
+            outline: none;
+            border-color: $lightGreen;
+            background-color: $lightGreen;
+        }
+
+        &:hover {
+            border-color: $darkGreen;
+            background-color: $darkGreen;
+        }
+
+        &:active {
+            border-color: $green;
+            color: $green;
+            background-color: $white;
+        }
+    }
+
+    &AddSignup {
+        font-weight: 500;
+        color: $white;
+    }
+
+    &Messege {
+        // position: absolute;
+        top: 155px;
+        font-weight: 500;
+        color: $white;
+        text-align: center;
+    }
+
+    &Spinner {
+        top: 148px;
+        left: 50%;
+        height: 30px;
+        width: 30px;
+        margin-left: -15px;
+        border-right: 4px solid $green;
+        border-top: 4px solid $red;
+        border-bottom: 4px solid $orange;
+        border-left: 4px solid $blue;
+        border-radius: 50%;
+        animation: spin 1s infinite linear;
+    }
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(359deg);
+        transform: rotate(359deg);
+    }
+}
+
+@media (max-width: 768px) {
+    .loginBox {
+        padding: 40px 10px 10px;
+
+        &Logo {
+            width: 120px;
+        }
+
+        &FormBox {
+            margin-bottom: 40px;
+            padding: 25px;
+            background-color: $darkRed;
+
+            &Title {
+                font-size: 17px;
+                text-align: center;
+            }
+        }
+
+        .input {
+            padding: 15px 10px;
+            width: 83%;
+            height: 40px;
+        }
+
+        .btn {
+            padding: 12px 5px;
+            width: 68%;
+            font-weight: 500;
+            color: $white;
+            background-color: $green;
+        }
+
+        .messege {
+            top: 105px;
+            display: flex;
+            align-items: center;
+            height: 55px;
+            font-size: 14px;
+            font-weight: 500;
+            color: $white;
+            text-align: center;
+        }
+
+        .spinner {
+            top: 118px;
+        }
+    }
+}

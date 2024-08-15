@@ -1,0 +1,17 @@
+@import '@styles/var';
+@import '@styles/mixins';
+
+.burgerBtn {
+    line-height: 0;
+
+    & path {
+        color: $red;
+        @include transition;
+    }
+
+    &:hover {
+        & path {
+            color: $darkRed;
+        }
+    }
+}

@@ -1,0 +1,17 @@
+@import '@styles/var';
+@import '@styles/mixins';
+
+.item {
+    width: 100%;
+
+    &Btn {
+        padding: 10px 15px;
+        width: 100%;
+        @include transition;
+
+        &:hover {
+            color: $white;
+            background-color: $purple;
+        }
+    }
+}

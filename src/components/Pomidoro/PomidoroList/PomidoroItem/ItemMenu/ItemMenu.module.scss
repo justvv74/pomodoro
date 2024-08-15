@@ -1,0 +1,102 @@
+@import '@styles/var';
+@import '@styles/mixins';
+
+.itemMenu {
+    &List {
+        position: absolute;
+        top: 40px;
+        display: flex;
+        flex-direction: column;
+        margin-left: 5.5px;
+        border: 1px solid $greyC4;
+        border-radius: 10px;
+        padding: 8px 0;
+        background-color: $white;
+        transform: translate(-50%, 0);
+        pointer-events: all;
+
+        &::after {
+            content: '';
+            position: absolute;
+            top: -6px;
+            left: 50%;
+            border-left: 1px solid $greyC4;
+            border-top: 1px solid $greyC4;
+            width: 10px;
+            height: 10px;
+            background-color: $white;
+            transform: translate(-50%, 0) rotateZ(45deg);
+        }
+    }
+
+    &Item {
+        // display: flex;
+        // align-items: center;
+        // justify-content: center;
+
+        &Btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            width: 100%;
+            height: 100%;
+            color: $grey99;
+            @include transition;
+
+            &Up:hover {
+                color: $green;
+            }
+
+            &Down:hover {
+                color: $pink;
+            }
+
+            &Edit:hover {
+                color: $blue;
+            }
+
+            &Delete:hover {
+                color: $red;
+            }
+
+            &:disabled:hover {
+                color: $grey99;
+                cursor: default;
+            }
+
+            &Up:active {
+                background-color: $lightGreen;
+            }
+
+            &Down:active {
+                background-color: $orange;
+            }
+
+            &Edit:active {
+                background-color: $blue;
+            }
+
+            &Delete:active {
+                background-color: $red;
+            }
+
+            &:active {
+                color: $white;
+            }
+
+            &:disabled:active {
+                background-color: $white;
+            }
+
+            &:focus {
+                outline: none;
+            }
+
+            & svg {
+                line-height: 0;
+                color: $green;
+            }
+        }
+    }
+}

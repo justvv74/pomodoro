@@ -1,0 +1,12 @@
+.header {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 80px;
+    box-shadow: 0px 10px 63px rgba(0, 0, 0, 0.07);
+
+    &Title {
+        color: green;
+    }
+}

@@ -1,0 +1,88 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+@import '@styles/var';
+
+body {
+    min-width: 320px;
+    padding: 0;
+    margin: 0;
+    // background-color: $greyF4;
+    font-size: 16px;
+    line-height: 17px;
+    font-weight: 400;
+    font-family: 'Roboto', serif;
+    color: $black;
+}
+
+* {
+    box-sizing: border-box;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    background-color: inherit;
+}
+
+ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+a {
+    text-decoration: none;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+p {
+    margin: 0;
+}
+
+button {
+    padding: 0;
+    border: 0;
+    background: transparent;
+    cursor: pointer;
+}
+
+#modal-root {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: auto;
+    height: auto;
+    pointer-events: none;
+}
+
+.spinner {
+    z-index: 100;
+    position: absolute;
+    bottom: 15px;
+    left: 70%;
+    height: 25px;
+    width: 25px;
+    margin-left: -15px;
+    border-right: 4px solid $green;
+    border-top: 4px solid $red;
+    border-bottom: 4px solid $orange;
+    border-left: 4px solid $blue;
+    border-radius: 50%;
+    animation: spin 1s infinite linear;
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(359deg);
+        transform: rotate(359deg);
+    }
+}
+
+.noScroll {
+    overflow-y: hidden;
+}

@@ -1,0 +1,12 @@
+@import '@styles/var';
+
+.pomodoro {
+    &List {
+        margin-bottom: 20px;
+        width: 370px;
+    }
+
+    &TotalTime {
+        color: $grey99;
+    }
+}

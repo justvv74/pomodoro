@@ -1,0 +1,148 @@
+@import '@styles/var';
+@import '@styles/mixins';
+
+.timerBox {
+    position: relative;
+    align-self: flex-start;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding: 107px 0;
+    width: 60%;
+    background-color: $greyF4;
+
+    &Header {
+        position: absolute;
+        top: 0;
+        right: 0;
+        left: 0;
+        display: flex;
+        justify-content: space-between;
+        padding: 19px 40px;
+        color: $white;
+        background-color: $greyC4;
+
+        &[itemType='pomidor'] {
+            background-color: $red;
+        }
+
+        &[itemType='break'] {
+            background-color: $green;
+        }
+    }
+
+    &TimeRow {
+        display: flex;
+        align-items: center;
+        /* margin: 0 0 25px 60px; */
+        margin-bottom: 25px;
+        gap: 20px;
+
+        &Time {
+            /* margin-right: 20px; */
+            font-size: 150px;
+            font-weight: 400;
+            line-height: 150px;
+
+            &[itemType='pomidor'] {
+                color: $red;
+            }
+
+            &[itemType='break'] {
+                color: $green;
+            }
+        }
+    }
+
+    &AddPomidor {
+        margin-right: -60px;
+        line-height: 0;
+
+        & svg {
+            width: 40px;
+            height: 40px;
+            color: $greyC4;
+            @include transition;
+        }
+
+        &:hover svg {
+            color: $green;
+        }
+
+        &:active svg {
+            color: $darkGreen;
+        }
+    }
+
+    &Descr {
+        &Row {
+            margin-bottom: 32px;
+        }
+
+        &Task {
+            color: $greyC4;
+        }
+    }
+
+    &BtnBox {
+        display: flex;
+        gap: 25px;
+
+        &StartBtn {
+            flex: 2 1 0;
+            padding: 19px 50px;
+            color: $white;
+            background-color: $green;
+            @include transition;
+
+            &[disabled] {
+                color: $black;
+                background-color: $greyC4;
+                pointer-events: none;
+            }
+
+            &:hover {
+                background-color: $lightGreen;
+            }
+
+            &:active {
+                background-color: $darkGreen;
+            }
+        }
+
+        &StopBtn {
+            flex: 2 1 0;
+            padding: 19px 50px;
+            color: $greyC4;
+            border: 1px solid $greyC4;
+            @include transition;
+
+            &[itemType='pomidor'] {
+                color: $red;
+                border: 1px solid $red;
+            }
+
+            &[itemType='pomidor']:hover {
+                color: $darkRed;
+                border: 1px solid $darkRed;
+            }
+
+            &[disabled] {
+                color: $greyC4;
+                border: 1px solid $greyC4;
+                pointer-events: none;
+            }
+
+            &:hover {
+                color: $red;
+                border: 1px solid $red;
+            }
+
+            &:active {
+                color: $white;
+                background-color: $red;
+            }
+        }
+    }
+}

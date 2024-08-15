@@ -1,0 +1,6 @@
+@mixin transition {
+    transition-property: width, color, background-color, border-color, margin, fill, stroke, border, background,
+        max-height box-shadow, translate, transform, -webkit-text-fill-color, text-decoration, filter;
+    transition-duration: 0.3s;
+    transition-timing-function: ease;
+}

@@ -1,0 +1,29 @@
+@import '@styles/var';
+@import '@styles/mixins';
+
+.form {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 25px;
+
+    &Input {
+        margin-bottom: 25px;
+        border: none;
+        padding: 19px 15px;
+        width: 370px;
+        height: 55px;
+        background-color: $greyF4;
+
+        &::placeholder {
+            color: $grey99;
+        }
+    }
+
+    &Btn {
+        width: 173px;
+        height: 55px;
+        color: $white;
+        background-color: $green;
+    }
+}
