@@ -1,20 +1,20 @@
 .textbox {
     margin-bottom: 25px;
-}
 
-.title {
-    margin-bottom: 10px;
-    font-size: 24px;
-    font-weight: 700;
-    line-height: 33px;
-}
+    &Title {
+        margin-bottom: 10px;
+        font-size: 24px;
+        font-weight: 700;
+        line-height: 33px;
+    }
 
-.list {
-    list-style: inside;
-    color: var(--red);
-}
+    &List {
+        list-style: inside;
+        color: var(--red);
+    }
 
-.item {
-    line-height: 33px;
-    color: var(--black);
+    &Item {
+        line-height: 33px;
+        color: var(--black);
+    }
 }

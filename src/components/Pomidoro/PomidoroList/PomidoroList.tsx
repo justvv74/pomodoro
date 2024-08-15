@@ -1,14 +1,9 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-// import { Navigate } from 'react-router-dom';
-// import { RootState } from '../../state/store';
-// import { IUserSettingsData } from '../../state/userSettings/action';
-// import { PomidoroItem } from './PomidoroItem';
 import styles from './PomidoroList.module.scss';
 import { AppDispatch, RootState } from '../../../redux/store';
 import PomidoroItem from './PomidoroItem/PomidoroItem';
 import { setCurrentTimer } from 'src/redux/services/currentTimer';
-// import { currentTimerAction } from '../../state/currentTimer/action';
 
 export interface IItem {
     id: number;
@@ -24,38 +19,41 @@ export interface IItem {
 }
 
 const PomidoroList = () => {
-    const [time, setTime] = useState('');
-    const { data, loading, error } = useSelector((state: RootState) => state.pomidoro);
-    const { settingsData, settingsLoading, settingsError } = useSelector((state: RootState) => state.userSettings);
+    const data = useSelector((state: RootState) => state.pomidoro.data);
+    const { settingsData } = useSelector((state: RootState) => state.userSettings);
     const dispatch = useDispatch<AppDispatch>();
 
-    const list = data;
+    const totalTime = useMemo(() => {
+        if (data.length === 0) return '';
+
+        const totalMinutes = data.reduce((acc, item) => acc + item.pomidors * settingsData.timer_duration, 0);
+        const totalMilliseconds = totalMinutes * 60 * 1000;
+        return new Date(totalMilliseconds).toISOString().substring(11, 16);
+    }, [data, settingsData.timer_duration]);
 
     useEffect(() => {
-        let totalTime = list.reduce((a, b) => {
-            return a + b.pomidors;
-        }, 0);
+        if (data.length > 0) {
+            dispatch(setCurrentTimer(data[0]));
+        }
+    }, [data, dispatch]);
 
-        setTime(new Date(totalTime * settingsData.timer_duration * 60 * 1000).toISOString().substring(11, 16));
-        dispatch(setCurrentTimer(list[0]));
-    }, [list, settingsData.timer_duration]);
+    const formattedTime = useMemo(() => {
+        if (!totalTime) return '';
+        const hours = totalTime.substring(0, 2);
+        const minutes = totalTime.substring(3);
+        return hours === '00' ? `${minutes} мин` : `${parseInt(hours, 10)} час ${minutes} мин`;
+    }, [totalTime]);
+
+    if (data.length === 0) return null;
 
     return (
         <>
-            {list.length > 0 && (
-                <>
-                    <ul className={styles.pomodoroList}>
-                        {list.map((item) => (
-                            <PomidoroItem key={item.id} item={item} list={list} />
-                        ))}
-                    </ul>
-                    <p className={styles.pomodoroTotalTime}>
-                        {time[1] === '0'
-                            ? `${time.substring(3)} мин`
-                            : `${time.substring(0, 2)} час ${time.substring(3)} мин`}
-                    </p>
-                </>
-            )}
+            <ul className={styles.pomodoroList}>
+                {data.map((item) => (
+                    <PomidoroItem key={item.id} item={item} list={data} />
+                ))}
+            </ul>
+            <p className={styles.pomodoroTotalTime}>{formattedTime}</p>
         </>
     );
 };

@@ -26,7 +26,8 @@
          "@services/*": ["./src/services/*"],
          "@lib/*": ["./src/lib/*"], 
         "@components/*": ["./src/components/*"],
-        "@middleware/*": ["./src/middleware/*"]
+        "@middleware/*": ["./src/middleware/*"],
+        "@hooks/*": ["./src/hooks/*"]
  }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "types"],

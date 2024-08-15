@@ -8,7 +8,7 @@ import { handleSignIn, handleSignUp } from '@services/frontend/userAuth';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import logo from '@images/loginLogo.png';
-import { AuthSchema } from 'src/utils/authShema';
+import { authSchema } from 'src/utils/validationShemas';
 
 interface IFormInput {
     username: string;
@@ -25,7 +25,7 @@ const Auth = () => {
         formState: { errors },
         setError,
     } = useForm<IFormInput>({
-        resolver: yupResolver(AuthSchema),
+        resolver: yupResolver(authSchema),
     });
 
     const router = useRouter();

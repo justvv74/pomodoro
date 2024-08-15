@@ -1,15 +1,32 @@
 @import '@styles/var';
+@import '@styles/mixins';
 
 .pomidoroItem {
     position: relative;
     display: flex;
     align-items: center;
-    border-bottom: 1px solid $greyE4;
-    padding: 5px 10px;
+    border-bottom: 1px solid $grey99;
+    padding: 5px 0 5px 10px;
+    cursor: pointer;
+    @include transition;
 
-    &first-child {
-        border-top: 1px solid $greyE4;
-        background-color: $greyF4;
+    &Effect {
+        &:focus {
+            outline: none;
+            background-color: $greyF4;
+        }
+
+        &:hover {
+            background-color: $greyEC;
+        }
+
+        &:active {
+            background-color: $greyC4;
+        }
+    }
+
+    &:last-child {
+        border: none;
     }
 
     &Pomidors {
@@ -19,6 +36,7 @@
         margin-right: 10px;
         border-radius: 100%;
         border: 1px solid $greyC4;
+        min-width: 25px;
         width: 25px;
         height: 25px;
         line-height: 0;
@@ -26,57 +44,59 @@
 
     &Descr {
         margin-right: auto;
+        word-wrap: break-word;
+        width: 249px;
+        line-height: 22px;
     }
 
     &MenuBox {
         position: relative;
         display: flex;
+        width: 46px;
     }
 
     &MenuBtn {
-        z-index: 11;
+        z-index: 1;
         position: relative;
-        padding: 10px 0 10px 10px;
-    }
+        padding: 10px;
+        @include transition;
+        pointer-events: all;
 
-    &Btn {
-        z-index: 10;
-        position: absolute;
-        top: 0;
-        right: 0;
-        bottom: 0;
-        left: 0;
-        opacity: 0.2;
+        & svg circle {
+            fill: $orange;
+        }
 
         &:focus {
             outline: none;
-            background-color: $greyE4;
+            background-color: $greyF4;
         }
 
         &:hover {
-            background-color: $greyC4;
+            background-color: $purple;
+            & .pomidoroItem {
+                background-color: transparent;
+            }
         }
 
         &:active {
-            background-color: $purple;
+            background-color: $blue;
         }
     }
 
     &EditForm {
-        z-index: 11;
-        position: absolute;
-        top: 9px;
-        left: 27px;
         display: flex;
         align-items: center;
-        padding: 3px 5px;
-        /* height: 18px; */
-        width: 80%;
+        margin-right: auto;
+        padding: 3px 0px;
+        width: 249px;
 
         &Input {
             flex: 1 1 0;
-            margin-right: 10px;
+            margin-right: 5px;
             border: 1px solid $greyC4;
+            width: 190px;
+            font-size: 16px;
+            line-height: 22px;
             background-color: $white;
 
             &:focus {
@@ -89,6 +109,7 @@
 
             & svg {
                 color: $green;
+                @include transition;
             }
 
             &:hover svg {
@@ -97,10 +118,12 @@
         }
 
         &Сancel {
+            height: 24px;
             line-height: 0;
 
             & svg {
                 color: $red;
+                @include transition;
             }
 
             &:hover svg {

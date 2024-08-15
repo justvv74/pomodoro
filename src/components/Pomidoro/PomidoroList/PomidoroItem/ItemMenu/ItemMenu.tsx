@@ -1,19 +1,17 @@
-import { useEffect, useRef } from 'react';
-import ReactDOM from 'react-dom';
-import { useDispatch, useSelector } from 'react-redux';
-// import { pomidorIdAction } from '../../../state/pomidorId/action';
-// import { getPomidoroListAsync } from '../../../state/PomodoroList/action';
+import { useRef } from 'react';
+import { useDispatch } from 'react-redux';
 import styles from './ItemMenu.module.scss';
-import { IItem } from '../../PomidoroList';
-import { fetchPomidoroList } from '../../../../../redux/services/pomidoro';
-import { setPomidorId } from '../../../../../redux/services/pomidoroId';
-import UpSvg from '@images/ItemMenu/UpSvg';
-import DeleteSvg from '@images/ItemMenu/DeleteSvg';
-import EditSvg from '@images/ItemMenu/EditSvg';
-import DownSvg from '@images/ItemMenu/DownSvg';
-import useOutsideClick from 'src/hooks/useOutsideClick';
+import useOutsideClick from '@hooks/useOutsideClick';
+import { fetchPomidoroList } from '@redux/services/pomidoro';
 import { AppDispatch } from '@redux/store';
-import axios from 'axios';
+import UpSvg from '@images/ItemMenu/UpSvg';
+import DownSvg from '@images/ItemMenu/DownSvg';
+import EditSvg from '@images/ItemMenu/EditSvg';
+import DeleteSvg from '@images/ItemMenu/DeleteSvg';
+import { decreasePomidorCount, deletePomidor, increasePomidorCount } from '@services/frontend/changeTimers';
+import { setISystemMessage } from '@redux/services/systemMessage';
+import { AxiosError } from 'axios';
+import { useItemMenuLogic } from '@hooks/useItemMenuLogic';
 
 interface IItemMenu {
     item: {
@@ -23,86 +21,67 @@ interface IItemMenu {
         timer_complete: boolean;
     };
     onClose: () => void;
-    list: IItem[];
     setIsEditInputOpen: (e: boolean) => void;
 }
 
-const ItemMenu = ({ item, onClose, list, setIsEditInputOpen }: IItemMenu) => {
-    const dispatch = useDispatch<AppDispatch>();
+const ItemMenu = ({ item, onClose, setIsEditInputOpen }: IItemMenu) => {
     const ref = useRef<HTMLUListElement>(null);
+    const { handleClickUp, handleClickDown, handleClickDelete } = useItemMenuLogic(item, onClose);
 
     useOutsideClick(ref, onClose);
 
-    function handleClick() {
-        const findItem = list.find((i) => i.id === item.id);
-        if (findItem) {
-            const index = list.indexOf(findItem);
+    // const handleClickUp = async () => {
+    //     try {
+    //         if (item.pomidors < 48) {
+    //             await increasePomidorCount(item.id);
+    //             dispatch(fetchPomidoroList());
+    //             onClose();
+    //         }
+    //     } catch (err) {
+    //         const errorMessage =
+    //             err instanceof AxiosError && err.response ? err.response.data.message : 'Unknown error occurred';
+    //         dispatch(setISystemMessage(errorMessage.message));
+    //     }
+    // };
 
-            console.log(index);
-            if (index !== 0) {
-                onClose();
-            }
-        }
-    }
+    // const handleClickDown = async () => {
+    //     try {
+    //         if (item.pomidors > 1) {
+    //             await decreasePomidorCount(item.id);
+    //             dispatch(fetchPomidoroList());
+    //             onClose();
+    //         }
+    //     } catch (err) {
+    //         const errorMessage =
+    //             err instanceof AxiosError && err.response ? err.response.data.message : 'Unknown error occurred';
+    //         dispatch(setISystemMessage(errorMessage.message));
+    //     }
+    // };
 
-    const hanleClickUp = async () => {
-        console.log('hanleClickUp');
-        if (item.pomidors < 48) {
-            const res = await fetch(`api/timers/${item.id}/up`, {
-                method: 'PATCH',
-                credentials: 'include',
-            })
-                .then((res) => {
-                    console.log(res);
-                    dispatch(setPomidorId(item.id));
-                    dispatch(fetchPomidoroList());
-                })
-                .catch((err) => console.log(err));
-            handleClick();
-        }
+    const handleClickEdit = () => {
+        setIsEditInputOpen(true);
+        onClose();
     };
 
-    async function hanleClickDown() {
-        // if (item.pomidors > 1) {
-        //     axios
-        //         .patch(`http://localhost:3001/pomodoro/${item.id}/down`, {
-        //             withCredentials: true,
-        //         })
-        //         .then((res) => {
-        //             console.log(res);
-        //             dispatch(pomidorIdAction(item.id));
-        //             dispatch(getPomidoroListAsync());
-        //         })
-        //         .catch((err) => console.log(err));
-        //     handleClick();
-        // }
-    }
-
-    function hanleClickEdit() {
-        setIsEditInputOpen(true);
-        onClose?.();
-    }
-
-    async function hanleClickDelete() {
-        console.log('delete');
-        axios
-            .delete(`api/timers/${item.id}/delete`, {
-                withCredentials: true,
-            })
-            .then((res) => {
-                dispatch(fetchPomidoroList());
-            })
-            .catch((err) => console.log(err));
-        handleClick();
-    }
+    // const handleClickDelete = async () => {
+    //     try {
+    //         await deletePomidor(item.id);
+    //         dispatch(fetchPomidoroList());
+    //         onClose();
+    //     } catch (err) {
+    //         const errorMessage =
+    //             err instanceof AxiosError && err.response ? err.response.data.message : 'Unknown error occurred';
+    //         dispatch(setISystemMessage(errorMessage.message));
+    //     }
+    // };
 
     return (
         <ul className={styles.itemMenuList} ref={ref}>
             <li className={styles.itemMenuItem}>
                 <button
                     className={`${styles.itemMenuItemBtn} ${styles.itemMenuItemBtnUp}`}
-                    onClick={hanleClickUp}
-                    disabled={item.timer_complete}
+                    onClick={handleClickUp}
+                    disabled={item.timer_complete || item.pomidors >= 48}
                 >
                     <UpSvg />
                     Увеличить
@@ -111,8 +90,8 @@ const ItemMenu = ({ item, onClose, list, setIsEditInputOpen }: IItemMenu) => {
             <li className={styles.itemMenuItem}>
                 <button
                     className={`${styles.itemMenuItemBtn} ${styles.itemMenuItemBtnDown}`}
-                    onClick={hanleClickDown}
-                    disabled={item.timer_complete}
+                    onClick={handleClickDown}
+                    disabled={item.timer_complete || item.pomidors <= 1}
                 >
                     <DownSvg />
                     Уменьшить
@@ -121,17 +100,17 @@ const ItemMenu = ({ item, onClose, list, setIsEditInputOpen }: IItemMenu) => {
             <li className={styles.itemMenuItem}>
                 <button
                     className={`${styles.itemMenuItemBtn} ${styles.itemMenuItemBtnEdit}`}
-                    onClick={hanleClickEdit}
+                    onClick={handleClickEdit}
                     disabled={item.timer_complete}
                 >
                     <EditSvg />
-                    Редиктировать
+                    Редактировать
                 </button>
             </li>
             <li className={styles.itemMenuItem}>
                 <button
                     className={`${styles.itemMenuItemBtn} ${styles.itemMenuItemBtnDelete}`}
-                    onClick={hanleClickDelete}
+                    onClick={handleClickDelete}
                 >
                     <DeleteSvg />
                     Удалить

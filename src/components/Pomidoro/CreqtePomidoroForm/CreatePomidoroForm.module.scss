@@ -7,9 +7,23 @@
     flex-direction: column;
     margin-bottom: 25px;
 
-    &Input {
+    &InputBox {
+        position: relative;
         margin-bottom: 25px;
+
+        &Error {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            font-size: 12px;
+            color: $red;
+            transform: translate(0, 100%);
+        }
+    }
+
+    &Input {
         border: none;
+        border-radius: 10px;
         padding: 19px 15px;
         width: 370px;
         height: 55px;
@@ -21,9 +35,19 @@
     }
 
     &Btn {
+        border-radius: 10px;
         width: 173px;
         height: 55px;
         color: $white;
         background-color: $green;
+        @include transition;
+
+        &:hover {
+            background-color: $lightGreen;
+        }
+
+        &:active {
+            background-color: $darkGreen;
+        }
     }
 }

@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import styles from './UserSettingsModal.module.scss';
 import { AppDispatch, RootState } from '@redux/store';
 import { IUserSettingsData, updateUserSettingsAsync } from '@redux/services/userSettings';
-import useOutsideClick from 'src/hooks/useOutsideClick';
+import useOutsideClick from '@hooks/useOutsideClick';
 import SettingControl from './SettingControl/SettingControl';
 
 interface IUserSettingsModal {

@@ -18,7 +18,6 @@ export interface ICurrentTimer {
     data: ICurrentTimerData;
 }
 
-// начальное состояние
 const initialState: ICurrentTimer = {
     data: {
         id: 0,
@@ -34,7 +33,6 @@ const initialState: ICurrentTimer = {
     },
 };
 
-// создание слайса с помощью createSlice
 const currentTimerSlice = createSlice({
     name: 'currentTimer',
     initialState,
@@ -45,8 +43,6 @@ const currentTimerSlice = createSlice({
     },
 });
 
-// экспорт экшенов
 export const { setCurrentTimer } = currentTimerSlice.actions;
 
-// экспорт редюсера
 export default currentTimerSlice.reducer;

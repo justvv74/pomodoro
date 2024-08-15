@@ -1,7 +1,7 @@
-// slices/pomidoroSlice.ts
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
-
+import axios, { AxiosError } from 'axios';
 import { RootState } from '../store';
+import { setISystemMessage } from './systemMessage';
 
 export interface Pomidoro {
     id: number;
@@ -18,34 +18,32 @@ export interface Pomidoro {
 
 interface PomidoroState {
     loading: boolean;
-    error: number | null;
+    error: string;
     data: Pomidoro[];
 }
 
 const initialState: PomidoroState = {
     loading: false,
-    error: null,
+    error: '',
     data: [],
 };
 
-// Указываем, что `rejectValue` имеет тип `number`
 export const fetchPomidoroList = createAsyncThunk<
-    Pomidoro[], // Успешный результат
-    void, // Аргументы thunk
+    Pomidoro[],
+    void,
     {
         state: RootState;
-        rejectValue: number; // Тип значения ошибки
+        rejectValue: string;
     }
->('pomidoro/fetchPomidoroList', async (_, { getState, rejectWithValue }) => {
+>('pomidoro/fetchPomidoroList', async (_, { getState, rejectWithValue, dispatch }) => {
     try {
-        const response = await fetch('api/timers/list', {
-            credentials: 'include',
+        const response = await axios.get<Pomidoro[]>('/api/timers/list', {
+            withCredentials: true,
         });
-
-        const result = await response.json();
-        const list = result;
-        console.log('pomidoro/fetchPomidoroList', result);
+        const list = response.data;
         const state = getState();
+
+        list.reverse();
 
         if (state.pomidorId.id || state.pomidorId.id !== 0) {
             const indexItem = list.find((i: Pomidoro) => i.id === state.pomidorId.id);
@@ -53,26 +51,30 @@ export const fetchPomidoroList = createAsyncThunk<
                 const index = list.indexOf(indexItem);
                 list.unshift(...list.splice(index, 1));
             }
-        } else {
-            list.reverse();
         }
 
         return list;
-    } catch (err: any) {
-        // Возвращаем код ошибки через rejectWithValue
-        return rejectWithValue(err.response?.status || 500);
+    } catch (err) {
+        const errorMessage =
+            err instanceof AxiosError && err.response ? err.response.data.message : 'Unknown error occurred';
+        dispatch(setISystemMessage(errorMessage.message));
+        return rejectWithValue(errorMessage);
     }
 });
 
 const pomidoroSlice = createSlice({
     name: 'pomidoro',
     initialState,
-    reducers: {},
+    reducers: {
+        setManualLoading: (state, action: PayloadAction<boolean>) => {
+            state.loading = action.payload;
+        },
+    },
     extraReducers: (builder) => {
         builder
             .addCase(fetchPomidoroList.pending, (state) => {
                 state.loading = true;
-                state.error = null;
+                state.error = '';
             })
             .addCase(fetchPomidoroList.fulfilled, (state, action: PayloadAction<Pomidoro[]>) => {
                 state.loading = false;
@@ -80,9 +82,11 @@ const pomidoroSlice = createSlice({
             })
             .addCase(fetchPomidoroList.rejected, (state, action) => {
                 state.loading = false;
-                state.error = action.payload || 500; // Теперь action.payload имеет тип number
+                state.error = action.payload as string;
             });
     },
 });
+
+export const { setManualLoading } = pomidoroSlice.actions;
 
 export default pomidoroSlice.reducer;

@@ -1,7 +1,8 @@
 // services/timerService.ts
 import db from '@lib/db';
+import { Pomidoro } from '@redux/services/pomidoro';
 
-export const createTimer = async (userId: number, body: any) => {
+export const createTimer = async (userId: number, body: Pomidoro) => {
     return await db('pom_timers')
         .insert({
             user_id: userId,
@@ -43,7 +44,7 @@ export const setTimerDescr = async (timerId: number, descr: string) => {
     });
 };
 
-export const updateTimerData = async (timerId: number, body: any) => {
+export const updateTimerData = async (timerId: number, body: Pomidoro) => {
     return await db('pom_timers').where({ id: timerId }).update({
         descr: body.descr,
         pomidors: body.pomidors,

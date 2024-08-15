@@ -48,9 +48,10 @@
 
         &Error {
             position: absolute;
-            bottom: -20px;
+            bottom: 0px;
             font-size: 14px;
             color: $purple;
+            transform: translate(0, 100%);
         }
     }
 
@@ -156,6 +157,7 @@
 
         &Logo {
             width: 120px;
+            height: auto;
         }
 
         &FormBox {
@@ -169,21 +171,28 @@
             }
         }
 
-        .input {
+        &InputBox {
+            width: 100%;
+
+            &Error {
+                font-size: 12px;
+            }
+        }
+
+        &Input {
             padding: 15px 10px;
-            width: 83%;
             height: 40px;
         }
 
-        .btn {
+        &Btn {
             padding: 12px 5px;
-            width: 68%;
+            width: 100%;
             font-weight: 500;
             color: $white;
             background-color: $green;
         }
 
-        .messege {
+        &Messege {
             top: 105px;
             display: flex;
             align-items: center;
@@ -194,8 +203,8 @@
             text-align: center;
         }
 
-        .spinner {
-            top: 118px;
+        &Spinner {
+            // top: 118px;
         }
     }
 }

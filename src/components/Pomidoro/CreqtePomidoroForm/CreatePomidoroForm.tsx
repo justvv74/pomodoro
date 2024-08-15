@@ -1,70 +1,60 @@
-// import axios from 'axios';
-import { ChangeEvent, FormEvent, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
 import { useDispatch, useSelector } from 'react-redux';
-// import { getPomidoroListAsync } from '../../state/PomodoroList/action';
-// import { RootState } from '../../state/store';
-// import { IUserSettingsData } from '../../state/userSettings/action';
 import styles from './CreatePomidoroForm.module.scss';
-import axios from 'axios';
 import { AppDispatch, RootState } from '@redux/store';
 import { setPomidorId } from '@redux/services/pomidoroId';
-import { fetchPomidoroList } from '@redux/services/pomidoro';
-// import { pomidorIdAc/tion } from '../../state/pomidorId/action';
+import { fetchPomidoroList, setManualLoading } from '@redux/services/pomidoro';
+import { createPomidor } from '@services/frontend/addTimer';
+import { AxiosError } from 'axios';
+import { setISystemMessage } from '@redux/services/systemMessage';
+import { addTimerShema } from 'src/utils/validationShemas';
 
 const CreatePomidorForm = () => {
-    const { data, loading, error } = useSelector((state: RootState) => state.pomidoro);
-    const [value, setValue] = useState('');
-
-    const { settingsData, settingsLoading, settingsError } = useSelector((state: RootState) => state.userSettings);
     const dispatch = useDispatch<AppDispatch>();
+    const { settingsData } = useSelector((state: RootState) => state.userSettings);
+    const { loading } = useSelector((state: RootState) => state.pomidoro);
 
-    function handleChange(event: ChangeEvent<HTMLInputElement>) {
-        setValue(event.target.value);
-    }
+    const {
+        register,
+        handleSubmit,
+        reset,
+        formState: { errors },
+    } = useForm({
+        resolver: yupResolver(addTimerShema),
+    });
 
-    const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-
-        axios
-            .post(
-                'api/timers/add',
-                {
-                    descr: value,
-                    pomidors: 1,
-                    current_pomidor_timer: settingsData.timer_duration * 60,
-                    current_pomidor: 1,
-                    current_break_timer: settingsData.break_duration * 60,
-                    current_break: 0,
-                    current_timer: 'pomidor',
-                    timer_complete: false,
-                },
-                { withCredentials: true }
-            )
-            .then((res) => {
-                dispatch(setPomidorId(0));
-                dispatch(fetchPomidoroList());
-            })
-            .catch((err) => {
-                console.log(String(err));
-            });
-        setValue('');
+    const onSubmit = async (data: { description: string }) => {
+        dispatch(setManualLoading(true));
+        try {
+            await createPomidor(data.description, settingsData.timer_duration, settingsData.break_duration);
+            dispatch(setPomidorId(0));
+            dispatch(fetchPomidoroList());
+            reset();
+        } catch (err) {
+            const errorMessage =
+                err instanceof AxiosError && err.response ? err.response.data.message : 'Unknown error occurred';
+            dispatch(setISystemMessage(errorMessage));
+        }
     };
 
     return (
-        <>
-            <form className={styles.form} onSubmit={handleSubmit}>
+        <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
+            <div className={styles.formInputBox}>
                 <input
                     className={styles.formInput}
                     type="text"
-                    name="pomidor"
-                    value={value}
-                    onChange={handleChange}
+                    {...register('description')}
                     placeholder="Название задачи"
+                    maxLength={40}
                 />
-                <button className={styles.formBtn}>Добавить</button>
-                {loading && <div className="spinner"></div>}
-            </form>
-        </>
+                {errors.description && <p className={styles.formInputBoxError}>{errors.description.message}</p>}
+            </div>
+            <button className={styles.formBtn} type="submit">
+                Добавить
+            </button>
+            {loading && <div className="spinner"></div>}
+        </form>
     );
 };
 

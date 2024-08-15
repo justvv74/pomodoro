@@ -19,7 +19,7 @@ const Pomidoro = () => {
 
     return (
         <main className={styles.main}>
-            <div className={styles.firstCol}>
+            <div className={styles.mainFirstCol}>
                 <TextBlock />
                 <CreatePomidorForm />
                 <PomidoroList />

@@ -3,11 +3,12 @@
 
 .itemMenu {
     &List {
+        z-index: 2;
         position: absolute;
         top: 40px;
+        left: 50%;
         display: flex;
         flex-direction: column;
-        margin-left: 5.5px;
         border: 1px solid $greyC4;
         border-radius: 10px;
         padding: 8px 0;
@@ -30,10 +31,6 @@
     }
 
     &Item {
-        // display: flex;
-        // align-items: center;
-        // justify-content: center;
-
         &Btn {
             display: flex;
             align-items: center;

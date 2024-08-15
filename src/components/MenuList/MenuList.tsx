@@ -3,7 +3,7 @@ import { useRef } from 'react';
 import styles from './MenuList.module.scss';
 import Logout from './Logout/Logout';
 import UserSettings from './UserSettings/UserSettings';
-import useOutsideClick from 'src/hooks/useOutsideClick';
+import useOutsideClick from '@hooks/useOutsideClick';
 
 interface IMenuList {
     handleClose: () => void;
