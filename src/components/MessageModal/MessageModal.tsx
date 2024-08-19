@@ -10,6 +10,7 @@ interface IMessageModal {
 
 const MessageModal = ({ message }: IMessageModal) => {
     const dispatch = useDispatch<AppDispatch>();
+    console.log('MessageModal', message);
 
     useEffect(() => {
         setTimeout(() => {

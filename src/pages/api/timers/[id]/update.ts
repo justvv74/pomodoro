@@ -7,8 +7,9 @@ const handler = async (req: AuthenticatedNextApiRequest, res: NextApiResponse) =
     if (req.method === 'PATCH') {
         try {
             const pomidorId = Number(req.query.id);
-            await updateTimerData(pomidorId, req.body);
-            res.status(200).json({ message: 'Update' });
+            const update = await updateTimerData(pomidorId, req.body);
+
+            res.status(200).json(update);
         } catch (err) {
             const errorMessage = err instanceof Error ? err.message : 'Unknown error occurred';
             res.status(400).json({ message: errorMessage });

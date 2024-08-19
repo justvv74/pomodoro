@@ -9,6 +9,7 @@ import { createPomidor } from '@services/frontend/addTimer';
 import { AxiosError } from 'axios';
 import { setISystemMessage } from '@redux/services/systemMessage';
 import { addTimerShema } from 'src/utils/validationShemas';
+// import Error from 'next/error';
 
 const CreatePomidorForm = () => {
     const dispatch = useDispatch<AppDispatch>();
@@ -32,8 +33,8 @@ const CreatePomidorForm = () => {
             dispatch(fetchPomidoroList());
             reset();
         } catch (err) {
-            const errorMessage =
-                err instanceof AxiosError && err.response ? err.response.data.message : 'Unknown error occurred';
+            const errorMessage = err instanceof Error && err.message ? err.message : 'Unknown error occurred';
+
             dispatch(setISystemMessage(errorMessage));
         }
     };

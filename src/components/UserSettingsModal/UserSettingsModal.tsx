@@ -6,6 +6,7 @@ import { AppDispatch, RootState } from '@redux/store';
 import { IUserSettingsData, updateUserSettingsAsync } from '@redux/services/userSettings';
 import useOutsideClick from '@hooks/useOutsideClick';
 import SettingControl from './SettingControl/SettingControl';
+import { useUpdeteAllTimers } from '@hooks/useUpdeteAllTimers';
 
 interface IUserSettingsModal {
     settingsModalOpen: (e: boolean) => void;
@@ -15,6 +16,7 @@ const UserSettingsModal = ({ settingsModalOpen }: IUserSettingsModal) => {
     const { settingsData, settingsLoading } = useSelector((state: RootState) => state.userSettings);
     const dispatch = useDispatch<AppDispatch>();
     const ref = useRef<HTMLDivElement | null>(null);
+    const { updateList } = useUpdeteAllTimers();
 
     const [settings, setSettingsData] = useState<IUserSettingsData>({
         ...settingsData,
@@ -39,6 +41,7 @@ const UserSettingsModal = ({ settingsModalOpen }: IUserSettingsModal) => {
     const handleClick = async () => {
         dispatch(updateUserSettingsAsync(settings)).then(() => {
             handleCloseModal();
+            updateList();
         });
     };
 

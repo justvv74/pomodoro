@@ -17,9 +17,7 @@ const Logout = () => {
             console.log('handleClick2222');
             router.push('/start');
         } catch (err) {
-            console.log('error');
-            const errorMessage =
-                err instanceof AxiosError && err.response ? err.response.data.message : 'Unknown error occurred';
+            const errorMessage = err instanceof Error && err.message ? err.message : 'Unknown error occurred';
             dispatch(setISystemMessage(errorMessage));
         }
     };

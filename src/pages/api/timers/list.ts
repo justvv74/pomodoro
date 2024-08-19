@@ -8,7 +8,7 @@ const handler = async (req: AuthenticatedNextApiRequest, res: NextApiResponse) =
         try {
             const user = req.user;
             const list = await getTimerList(user.id);
-            console.log('list', list);
+
             res.status(200).json(list);
         } catch (err) {
             const errorMessage = err instanceof Error ? err.message : 'Unknown error occurred';

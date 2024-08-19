@@ -1,114 +1,6 @@
-// import { ChangeEvent, FormEvent, useRef, useState } from 'react';
-// import { useDispatch } from 'react-redux';
-// import { IItem } from '../PomidoroList';
-// import styles from './PomidoroItem.module.scss';
-// import ItemMenu from './ItemMenu/ItemMenu';
-// import { setPomidorId } from '../../../../redux/services/pomidoroId';
-// import { fetchPomidoroList } from '../../../../redux/services/pomidoro';
-// import { AppDispatch } from '@redux/store';
-// import ThreeDotSvg from '@images/listItem/ThreeDotSvg';
-// import CheckSvg from '@images/listItem/CheckSvg';
-// import CrossSvg from '@images/listItem/CrossSvg';
-
-// interface IPomidoroItem {
-//     item: {
-//         id: number;
-//         pomidors: number;
-//         descr: string;
-//         timer_complete: boolean;
-//     };
-//     list: IItem[];
-// }
-
-// const PomidoroItem = ({ item, list }: IPomidoroItem) => {
-//     const [isMenuOpen, setIsMenuOpen] = useState(false);
-//     const [isEditInputOpen, setIsEditInputOpen] = useState(false);
-//     const [inputValue, setInputValue] = useState(item.descr);
-//     const dispatch = useDispatch<AppDispatch>();
-//     const ref = useRef<HTMLButtonElement>(null);
-
-//     function handleClick() {
-//         dispatch(setPomidorId(item.id));
-//         dispatch(fetchPomidoroList());
-//     }
-
-//     function handleChange(event: ChangeEvent<HTMLInputElement>) {
-//         setInputValue(event.target.value);
-//     }
-
-//     async function handleClickInput() {
-//         dispatch(setPomidorId(item.id));
-//         const body = {
-//             descr: inputValue,
-//         };
-
-//         fetch(
-//             `api/timers/${item.id}/descr`,
-
-//             { method: 'PATCH', body: JSON.stringify(body), credentials: 'include' }
-//         )
-//             .then((res) => {
-//                 console.log(res);
-//                 dispatch(fetchPomidoroList());
-//                 setIsEditInputOpen(false);
-//             })
-//             .catch((err) => console.log(err));
-//     }
-
-//     function handleSubmit(event: FormEvent) {
-//         event.preventDefault();
-//     }
-
-//     return (
-//         <li key={item.id} className={styles.pomidoroItem}>
-//             <p className={styles.pomidoroItemPomidors}>{item.pomidors}</p>
-//             <span className={styles.pomidoroItemDescr}>{item.descr}</span>
-//             <div className={styles.menuBox}>
-//                 <button className={styles.pomidoroItemMenuBtn} onClick={() => setIsMenuOpen(true)} ref={ref}>
-//                     <ThreeDotSvg />
-//                 </button>
-//                 {isMenuOpen && (
-//                     <ItemMenu
-//                         item={item}
-//                         onClose={() => {
-//                             setIsMenuOpen(false);
-//                         }}
-//                         list={list}
-//                         setIsEditInputOpen={setIsEditInputOpen}
-//                     />
-//                 )}
-//             </div>
-//             <button className={styles.pomidoroItemBtn} onClick={handleClick}>
-//                 1
-//             </button>
-//             {isEditInputOpen && (
-//                 <form className={styles.pomidoroItemEditForm} onSubmit={handleSubmit}>
-//                     <input
-//                         className={styles.editFormInput}
-//                         type="text"
-//                         name="descr"
-//                         value={inputValue}
-//                         onChange={handleChange}
-//                         autoFocus={true}
-//                     />
-//                     <button className={styles.pomidoroItemEditFormConfirm} onClick={handleClickInput}>
-//                         <CheckSvg />
-//                     </button>
-//                     <button className={styles.pomidoroItemEditFormСancel} onClick={() => setIsEditInputOpen(false)}>
-//                         <CrossSvg />
-//                     </button>
-//                 </form>
-//             )}
-//         </li>
-//     );
-// };
-
-// export default PomidoroItem;
-
-import { ChangeEvent, MouseEvent, useRef, useState } from 'react';
+import { MouseEvent, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useForm } from 'react-hook-form';
-import * as Yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { IItem } from '../PomidoroList';
 import styles from './PomidoroItem.module.scss';
@@ -163,8 +55,7 @@ const PomidoroItem = ({ item, list }: IPomidoroItem) => {
             setIsEditInputOpen(false);
             dispatch(setPomidorId(item.id));
         } catch (err) {
-            const errorMessage =
-                err instanceof AxiosError && err.response ? err.response.data.message : 'Unknown error occurred';
+            const errorMessage = err instanceof Error && err.message ? err.message : 'Unknown error occurred';
 
             dispatch(setISystemMessage(errorMessage));
         }
@@ -197,7 +88,7 @@ const PomidoroItem = ({ item, list }: IPomidoroItem) => {
     const handleMouseLeave = () => {
         setIsMouseOverBtn(false);
     };
-
+    console.log('1111111111111111111', item);
     return (
         <li
             key={item.id}
@@ -205,7 +96,13 @@ const PomidoroItem = ({ item, list }: IPomidoroItem) => {
             onClick={handleClick}
             tabIndex={0}
         >
-            <p className={styles.pomidoroItemPomidors}>{item.pomidors}</p>
+            <p
+                className={`${styles.pomidoroItemPomidors} ${
+                    item.timer_complete && styles.pomidoroItemPomidorsIsComplete
+                }`}
+            >
+                {item.pomidors}
+            </p>
             {isEditInputOpen ? (
                 <form className={styles.pomidoroItemEditForm} onSubmit={handleSubmit(onSubmit)}>
                     <input

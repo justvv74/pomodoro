@@ -40,6 +40,10 @@
         width: 25px;
         height: 25px;
         line-height: 0;
+
+        &IsComplete {
+            background-color: $red;
+        }
     }
 
     &Descr {

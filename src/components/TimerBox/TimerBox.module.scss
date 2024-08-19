@@ -2,21 +2,13 @@
 @import '@styles/mixins';
 
 .timerBox {
-    position: relative;
     align-self: flex-start;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    padding: 107px 0;
+    border-radius: 10px;
     width: 60%;
     background-color: $greyF4;
+    overflow: hidden;
 
     &Header {
-        position: absolute;
-        top: 0;
-        right: 0;
-        left: 0;
         display: flex;
         justify-content: space-between;
         padding: 19px 40px;
@@ -30,6 +22,14 @@
         &[itemType='break'] {
             background-color: $green;
         }
+    }
+
+    &Content {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        padding: 107px 0;
     }
 
     &TimeRow {
@@ -91,6 +91,7 @@
 
         &StartBtn {
             flex: 2 1 0;
+            border-radius: 10px;
             padding: 19px 50px;
             color: $white;
             background-color: $green;
@@ -113,6 +114,7 @@
 
         &StopBtn {
             flex: 2 1 0;
+            border-radius: 10px;
             padding: 19px 50px;
             color: $greyC4;
             border: 1px solid $greyC4;

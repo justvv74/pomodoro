@@ -3,6 +3,7 @@ import db from '@lib/db';
 import { Pomidoro } from '@redux/services/pomidoro';
 
 export const createTimer = async (userId: number, body: Pomidoro) => {
+    console.log('createTimer', body);
     return await db('pom_timers')
         .insert({
             user_id: userId,
@@ -45,16 +46,21 @@ export const setTimerDescr = async (timerId: number, descr: string) => {
 };
 
 export const updateTimerData = async (timerId: number, body: Pomidoro) => {
-    return await db('pom_timers').where({ id: timerId }).update({
-        descr: body.descr,
-        pomidors: body.pomidors,
-        current_pomidor_timer: body.current_pomidor_timer,
-        current_pomidor: body.current_pomidor,
-        current_break_timer: body.current_break_timer,
-        current_break: body.current_break,
-        current_timer: body.current_timer,
-        timer_complete: body.timer_complete,
-    });
+    const updatedData = await db('pom_timers')
+        .where({ id: timerId })
+        .update({
+            descr: body.descr,
+            pomidors: body.pomidors,
+            current_pomidor_timer: body.current_pomidor_timer,
+            current_pomidor: body.current_pomidor,
+            current_break_timer: body.current_break_timer,
+            current_break: body.current_break,
+            current_timer: body.current_timer,
+            timer_complete: body.timer_complete,
+        })
+        .returning('*');
+
+    return updatedData[0];
 };
 
 export const deleteTimer = async (timerId: number) => {

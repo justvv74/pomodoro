@@ -12,7 +12,7 @@ export interface Pomidoro {
     current_pomidor: number;
     current_break_timer: number;
     current_break: number;
-    current_timer: string;
+    current_timer: 'pomidor' | 'break';
     timer_complete: boolean;
 }
 

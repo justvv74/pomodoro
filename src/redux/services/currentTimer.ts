@@ -10,7 +10,7 @@ export interface ICurrentTimerData {
     current_pomidor: number;
     current_break_timer: number;
     current_break: number;
-    current_timer: string;
+    current_timer: 'pomidor' | 'break';
     timer_complete: boolean;
 }
 
@@ -28,7 +28,7 @@ const initialState: ICurrentTimer = {
         current_pomidor: 0,
         current_break_timer: 0,
         current_break: 0,
-        current_timer: '',
+        current_timer: 'pomidor',
         timer_complete: false,
     },
 };

@@ -7,7 +7,9 @@ export const increasePomidorCount = async (id: number) => {
         });
     } catch (err) {
         const errorMessage =
-            err instanceof AxiosError && err.response ? err.response.data.message : 'Unknown error occurred';
+            err instanceof AxiosError && err?.response?.data.message
+                ? err.response.data.message
+                : 'Unknown error occurred';
         throw new Error(errorMessage);
     }
 };
@@ -19,7 +21,9 @@ export const decreasePomidorCount = async (id: number) => {
         });
     } catch (err) {
         const errorMessage =
-            err instanceof AxiosError && err.response ? err.response.data.message : 'Unknown error occurred';
+            err instanceof AxiosError && err?.response?.data.message
+                ? err.response.data.message
+                : 'Unknown error occurred';
         throw new Error(errorMessage);
     }
 };
@@ -31,7 +35,9 @@ export const deletePomidor = async (id: number) => {
         });
     } catch (err) {
         const errorMessage =
-            err instanceof AxiosError && err.response ? err.response.data.message : 'Unknown error occurred';
+            err instanceof AxiosError && err?.response?.data.message
+                ? err.response.data.message
+                : 'Unknown error occurred';
         throw new Error(errorMessage);
     }
 };

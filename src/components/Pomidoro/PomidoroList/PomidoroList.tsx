@@ -35,7 +35,7 @@ const PomidoroList = () => {
         if (data.length > 0) {
             dispatch(setCurrentTimer(data[0]));
         }
-    }, [data, dispatch]);
+    }, [data, settingsData, dispatch]);
 
     const formattedTime = useMemo(() => {
         if (!totalTime) return '';

@@ -6,6 +6,7 @@ import pomidoroIdReducer from './services/pomidoroId';
 import currentTimerReducer from './services/currentTimer';
 import userSettingsReducer from './services/userSettings';
 import systemMessageReducer from './services/systemMessage';
+import oldSettingsReducer from './services/oldSettingsData';
 
 // Конфигурация store
 export const store = configureStore({
@@ -17,6 +18,7 @@ export const store = configureStore({
         currentTimer: currentTimerReducer,
         userSettings: userSettingsReducer,
         systemMessage: systemMessageReducer,
+        oldSettings: oldSettingsReducer,
     },
 });
 
