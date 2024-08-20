@@ -111,7 +111,7 @@ export const updateUserSettingsAsync = createAsyncThunk<IUserSettingsData, IUser
                 err instanceof AxiosError && err.response
                     ? err.response.data.message || 'Unknown error occurred'
                     : 'Unknown error occurred';
-            console.log('updateUserSettingsAsync', errorMessage, err);
+
             dispatch(setISystemMessage(errorMessage));
             return rejectWithValue(errorMessage || 'Unknown error');
         }

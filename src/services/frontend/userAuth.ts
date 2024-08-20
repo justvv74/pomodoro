@@ -63,7 +63,6 @@ export const handleSignUp = async (
 };
 
 export const logout = async () => {
-    console.log('logout');
     try {
         return await axios.get('api/logout', {
             withCredentials: true,

@@ -24,7 +24,7 @@ export const useTimerEffects = (
             isFirstRenderCurrentTimer.current = false;
             return;
         }
-        console.log('current_timer');
+
         setInitialTime(timerType === 'pomidor' ? data.current_pomidor_timer : data.current_break_timer);
         if (timerType === 'break' || (timerType === 'pomidor' && settings.auto_start)) {
             startTimer(); // Запускаем таймер, если это перерыв или если автостарт включен для рабочего таймера
@@ -51,7 +51,6 @@ export const useTimerEffects = (
                     : data.current_pomidor_timer
                 : data.current_break_timer
         );
-        console.log('setInitialTime', data);
 
         setTimerType(data.current_timer);
         pauseTimer();
@@ -67,7 +66,7 @@ export const useTimerEffects = (
             isFirstRenderTime.current = false;
             return;
         }
-        console.log('time', time);
+
         if (time === 0) {
             if (settings.alerts) {
                 const audio = new Audio(timerEnd);

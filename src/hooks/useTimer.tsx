@@ -12,7 +12,6 @@ const useTimer = (initialTime: number = SECONDS_IN_MINUTE, timerType: 'pomidor' 
     // Функция для запуска таймера
     const startTimer = useCallback(() => {
         if (timerRef.current === null) {
-            console.log('startTimer');
             setTimerState('start');
             // Запускаем только если таймер не работает
             timerRef.current = setInterval(() => {
@@ -24,7 +23,6 @@ const useTimer = (initialTime: number = SECONDS_IN_MINUTE, timerType: 'pomidor' 
     // Функция для паузы таймера
     const pauseTimer = useCallback(() => {
         if (timerRef.current !== null) {
-            console.log('pauseTimer');
             setTimerState('pause');
             clearInterval(timerRef.current);
             timerRef.current = null; // Очищаем ссылку на таймер
@@ -33,7 +31,6 @@ const useTimer = (initialTime: number = SECONDS_IN_MINUTE, timerType: 'pomidor' 
 
     // Функция для сброса и остановки таймера
     const resetTimer = useCallback(() => {
-        console.log('resetTimer');
         pauseTimer(); // Останавливаем таймер
         setTimerState('stop');
         setTime(

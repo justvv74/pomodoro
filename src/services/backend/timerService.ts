@@ -3,7 +3,6 @@ import db from '@lib/db';
 import { Pomidoro } from '@redux/services/pomidoro';
 
 export const createTimer = async (userId: number, body: Pomidoro) => {
-    console.log('createTimer', body);
     return await db('pom_timers')
         .insert({
             user_id: userId,

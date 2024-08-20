@@ -54,9 +54,6 @@ const handlePatch = async (req: AuthenticatedNextApiRequest, res: NextApiRespons
 const handler = async (req: AuthenticatedNextApiRequest, res: NextApiResponse): Promise<void> => {
     const method = req.method;
     const user = req.user;
-    const sessionId = req.sessionId;
-    console.log('user', user);
-    console.log('sessionId', sessionId);
 
     switch (method) {
         case 'POST':
