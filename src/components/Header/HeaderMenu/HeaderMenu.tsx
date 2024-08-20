@@ -11,9 +11,9 @@ export function HeaderMenu() {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false);
 
-    function settingsModalOpen(value: boolean) {
+    const settingsModalOpen = (value: boolean) => {
         setIsSettingsModalOpen(value);
-    }
+    };
 
     const handleClose = () => {
         setIsMenuOpen(false);

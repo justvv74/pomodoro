@@ -1,16 +1,17 @@
 'use client';
 
 import { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import styles from './Pomidoro.module.scss';
 import TextBlock from './TextBlock/TextBlock';
 import PomidoroList from './PomidoroList/PomidoroList';
 import CreatePomidorForm from './CreqtePomidoroForm/CreatePomidoroForm';
 import TimerBox from '@components/TimerBox/TimerBox';
-import { AppDispatch } from '@redux/store';
+import { AppDispatch, RootState } from '@redux/store';
 import { fetchPomidoroList } from '@redux/services/pomidoro';
 
 const Pomidoro = () => {
+    const data = useSelector((state: RootState) => state.currentTimer.data);
     const dispatch = useDispatch<AppDispatch>();
 
     useEffect(() => {
@@ -21,10 +22,12 @@ const Pomidoro = () => {
         <main className={styles.main}>
             <div className={styles.mainFirstCol}>
                 <TextBlock />
-                <CreatePomidorForm />
-                <PomidoroList />
+                <div className={styles.mainFirstColControlsBlock}>
+                    <CreatePomidorForm />
+                    <PomidoroList />
+                </div>
             </div>
-            <TimerBox />
+            {data.pomidors > 0 && <TimerBox />}
         </main>
     );
 };

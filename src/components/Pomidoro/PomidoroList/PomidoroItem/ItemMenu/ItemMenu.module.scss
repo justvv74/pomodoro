@@ -97,3 +97,27 @@
         }
     }
 }
+
+@media screen and (max-width: 500px) {
+    .itemMenu {
+        &List {
+            left: auto;
+            right: 0;
+            transform: translate(0, 0);
+
+            &::after {
+                // content: '';
+                // position: absolute;
+                // top: -6px;
+                left: auto;
+                right: 16px;
+                // border-left: 1px solid $greyC4;
+                // border-top: 1px solid $greyC4;
+                // width: 10px;
+                // height: 10px;
+                // background-color: $white;
+                transform: translate(0, 0) rotateZ(45deg);
+            }
+        }
+    }
+}

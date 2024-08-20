@@ -4,22 +4,13 @@ import styles from './PomidoroList.module.scss';
 import { AppDispatch, RootState } from '../../../redux/store';
 import PomidoroItem from './PomidoroItem/PomidoroItem';
 import { setCurrentTimer } from 'src/redux/services/currentTimer';
-
-export interface IItem {
-    id: number;
-    user_id: number;
-    descr: string;
-    pomidors: number;
-    current_pomidor_timer: number;
-    current_pomidor: number;
-    current_break_timer: number;
-    current_break: number;
-    current_timer: string;
-    timer_complete: boolean;
-}
+import { SECONDS_IN_MINUTE } from 'src/utils/systemData';
+import { setPomidoroList } from '@redux/services/pomidoro';
+import { sortPomidoroList } from 'src/utils/sortPomidoroList';
 
 const PomidoroList = () => {
     const data = useSelector((state: RootState) => state.pomidoro.data);
+    const currentPomidor = useSelector((state: RootState) => state.currentTimer.data);
     const { settingsData } = useSelector((state: RootState) => state.userSettings);
     const dispatch = useDispatch<AppDispatch>();
 
@@ -27,7 +18,7 @@ const PomidoroList = () => {
         if (data.length === 0) return '';
 
         const totalMinutes = data.reduce((acc, item) => acc + item.pomidors * settingsData.timer_duration, 0);
-        const totalMilliseconds = totalMinutes * 60 * 1000;
+        const totalMilliseconds = totalMinutes * SECONDS_IN_MINUTE * 1000;
         return new Date(totalMilliseconds).toISOString().substring(11, 16);
     }, [data, settingsData.timer_duration]);
 
@@ -36,6 +27,12 @@ const PomidoroList = () => {
             dispatch(setCurrentTimer(data[0]));
         }
     }, [data, settingsData, dispatch]);
+
+    useEffect(() => {
+        const sortedList = sortPomidoroList([...data], currentPomidor.id, currentPomidor);
+
+        dispatch(setPomidoroList(sortedList));
+    }, [currentPomidor]);
 
     const formattedTime = useMemo(() => {
         if (!totalTime) return '';
@@ -47,14 +44,14 @@ const PomidoroList = () => {
     if (data.length === 0) return null;
 
     return (
-        <>
+        <div>
             <ul className={styles.pomodoroList}>
                 {data.map((item) => (
                     <PomidoroItem key={item.id} item={item} list={data} />
                 ))}
             </ul>
             <p className={styles.pomodoroTotalTime}>{formattedTime}</p>
-        </>
+        </div>
     );
 };
 

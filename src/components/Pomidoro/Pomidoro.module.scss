@@ -8,3 +8,30 @@
         width: 40%;
     }
 }
+
+@media screen and (max-width: 1024px) {
+    .main {
+        flex-direction: column;
+        padding: 40px;
+
+        &FirstCol {
+            position: relative;
+            display: flex;
+
+            gap: 20px;
+            width: 100%;
+        }
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .main {
+        flex-direction: column-reverse;
+        padding: 40px 16px 120px;
+
+        &FirstCol {
+            flex-direction: column;
+            gap: 20px;
+        }
+    }
+}

@@ -16,11 +16,16 @@ export const createTimer = async (userId: number, body: Pomidoro) => {
             current_timer: body.current_timer,
             timer_complete: body.timer_complete,
         })
-        .returning('id');
+        .returning('*');
 };
 
 export const getTimerList = async (userId: number) => {
     return await db('pom_timers').select().where({ user_id: userId });
+};
+
+export const getTimer = async (timerId: number) => {
+    const timer = await db('pom_timers').select().where({ id: timerId });
+    return timer[0];
 };
 
 export const setPomidorUp = async (timerId: number) => {

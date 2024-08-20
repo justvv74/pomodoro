@@ -7,7 +7,7 @@ export const updatePomidor = async (id: number, body: Partial<Pomidoro>) => {
 
         return response.data;
     } catch (err) {
-        const errorMessage =
+        const errorMessage: string =
             err instanceof AxiosError && err?.response?.data.message
                 ? err.response.data.message
                 : 'Unknown error occurred';

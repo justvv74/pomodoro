@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import { RootState } from '../store';
 import { setISystemMessage } from './systemMessage';
 
@@ -108,7 +108,10 @@ export const updateUserSettingsAsync = createAsyncThunk<IUserSettingsData, IUser
             return response.data;
         } catch (err) {
             const errorMessage =
-                axios.isAxiosError(err) && err.response ? err.response.data.message : 'Unknown error occurred';
+                err instanceof AxiosError && err.response
+                    ? err.response.data.message || 'Unknown error occurred'
+                    : 'Unknown error occurred';
+            console.log('updateUserSettingsAsync', errorMessage, err);
             dispatch(setISystemMessage(errorMessage));
             return rejectWithValue(errorMessage || 'Unknown error');
         }

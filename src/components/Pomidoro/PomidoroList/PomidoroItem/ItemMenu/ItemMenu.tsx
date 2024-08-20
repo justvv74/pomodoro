@@ -1,25 +1,15 @@
 import { useRef } from 'react';
-import { useDispatch } from 'react-redux';
 import styles from './ItemMenu.module.scss';
 import useOutsideClick from '@hooks/useOutsideClick';
-import { fetchPomidoroList } from '@redux/services/pomidoro';
-import { AppDispatch } from '@redux/store';
 import UpSvg from '@images/ItemMenu/UpSvg';
 import DownSvg from '@images/ItemMenu/DownSvg';
 import EditSvg from '@images/ItemMenu/EditSvg';
 import DeleteSvg from '@images/ItemMenu/DeleteSvg';
-import { decreasePomidorCount, deletePomidor, increasePomidorCount } from '@services/frontend/changeTimers';
-import { setISystemMessage } from '@redux/services/systemMessage';
-import { AxiosError } from 'axios';
 import { useItemMenuLogic } from '@hooks/useItemMenuLogic';
+import { Pomidoro } from '@redux/services/pomidoro';
 
 interface IItemMenu {
-    item: {
-        id: number;
-        pomidors: number;
-        descr: string;
-        timer_complete: boolean;
-    };
+    item: Pomidoro;
     onClose: () => void;
     setIsEditInputOpen: (e: boolean) => void;
 }
@@ -30,50 +20,10 @@ const ItemMenu = ({ item, onClose, setIsEditInputOpen }: IItemMenu) => {
 
     useOutsideClick(ref, onClose);
 
-    // const handleClickUp = async () => {
-    //     try {
-    //         if (item.pomidors < 48) {
-    //             await increasePomidorCount(item.id);
-    //             dispatch(fetchPomidoroList());
-    //             onClose();
-    //         }
-    //     } catch (err) {
-    //         const errorMessage =
-    //             err instanceof AxiosError && err.response ? err.response.data.message : 'Unknown error occurred';
-    //         dispatch(setISystemMessage(errorMessage.message));
-    //     }
-    // };
-
-    // const handleClickDown = async () => {
-    //     try {
-    //         if (item.pomidors > 1) {
-    //             await decreasePomidorCount(item.id);
-    //             dispatch(fetchPomidoroList());
-    //             onClose();
-    //         }
-    //     } catch (err) {
-    //         const errorMessage =
-    //             err instanceof AxiosError && err.response ? err.response.data.message : 'Unknown error occurred';
-    //         dispatch(setISystemMessage(errorMessage.message));
-    //     }
-    // };
-
     const handleClickEdit = () => {
         setIsEditInputOpen(true);
         onClose();
     };
-
-    // const handleClickDelete = async () => {
-    //     try {
-    //         await deletePomidor(item.id);
-    //         dispatch(fetchPomidoroList());
-    //         onClose();
-    //     } catch (err) {
-    //         const errorMessage =
-    //             err instanceof AxiosError && err.response ? err.response.data.message : 'Unknown error occurred';
-    //         dispatch(setISystemMessage(errorMessage.message));
-    //     }
-    // };
 
     return (
         <ul className={styles.itemMenuList} ref={ref}>
@@ -91,7 +41,7 @@ const ItemMenu = ({ item, onClose, setIsEditInputOpen }: IItemMenu) => {
                 <button
                     className={`${styles.itemMenuItemBtn} ${styles.itemMenuItemBtnDown}`}
                     onClick={handleClickDown}
-                    disabled={item.timer_complete || item.pomidors <= 1}
+                    disabled={item.timer_complete || item.pomidors <= 1 || item.pomidors === item.current_pomidor}
                 >
                     <DownSvg />
                     Уменьшить

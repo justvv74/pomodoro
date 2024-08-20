@@ -2,6 +2,7 @@ import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import axios, { AxiosError } from 'axios';
 import { RootState } from '../store';
 import { setISystemMessage } from './systemMessage';
+import { sortPomidoroList } from 'src/utils/sortPomidoroList';
 
 export interface Pomidoro {
     id: number;
@@ -40,24 +41,22 @@ export const fetchPomidoroList = createAsyncThunk<
         const response = await axios.get<Pomidoro[]>('/api/timers/list', {
             withCredentials: true,
         });
-        const list = response.data;
+        const list = response.data.reverse(); // реверс списка
+
         const state = getState();
+        const currentTimerId = state.currentTimer.data?.id;
 
-        list.reverse();
+        // Сортировка списка
+        const sortedList = currentTimerId ? sortPomidoroList(list, currentTimerId) : list;
 
-        if (state.pomidorId.id || state.pomidorId.id !== 0) {
-            const indexItem = list.find((i: Pomidoro) => i.id === state.pomidorId.id);
-            if (indexItem) {
-                const index = list.indexOf(indexItem);
-                list.unshift(...list.splice(index, 1));
-            }
-        }
-
-        return list;
+        return sortedList;
     } catch (err) {
         const errorMessage =
-            err instanceof AxiosError && err.response ? err.response.data.message : 'Unknown error occurred';
-        dispatch(setISystemMessage(errorMessage.message));
+            err instanceof AxiosError && err.response
+                ? err.response.data.message || 'Unknown error occurred'
+                : 'Unknown error occurred';
+        console.log('fetchPomidoroList', errorMessage, err);
+        dispatch(setISystemMessage(errorMessage));
         return rejectWithValue(errorMessage);
     }
 });
@@ -68,6 +67,9 @@ const pomidoroSlice = createSlice({
     reducers: {
         setManualLoading: (state, action: PayloadAction<boolean>) => {
             state.loading = action.payload;
+        },
+        setPomidoroList: (state, action: PayloadAction<Pomidoro[]>) => {
+            state.data = action.payload;
         },
     },
     extraReducers: (builder) => {
@@ -87,6 +89,6 @@ const pomidoroSlice = createSlice({
     },
 });
 
-export const { setManualLoading } = pomidoroSlice.actions;
+export const { setManualLoading, setPomidoroList } = pomidoroSlice.actions;
 
 export default pomidoroSlice.reducer;

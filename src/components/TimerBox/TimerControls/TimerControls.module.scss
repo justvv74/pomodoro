@@ -1,0 +1,83 @@
+@import '@styles/var';
+@import '@styles/mixins';
+
+.timerBox {
+    &BtnBox {
+        display: flex;
+        gap: 25px;
+
+        &StartBtn {
+            flex: 2 1 0;
+            border-radius: 10px;
+            padding: 19px 50px;
+            color: $white;
+            background-color: $green;
+            @include transition;
+
+            &[disabled] {
+                color: $black;
+                background-color: $greyC4;
+                pointer-events: none;
+            }
+
+            &:hover {
+                background-color: $lightGreen;
+            }
+
+            &:active {
+                background-color: $darkGreen;
+            }
+        }
+
+        &StopBtn {
+            flex: 2 1 0;
+            border-radius: 10px;
+            padding: 19px 50px;
+            color: $greyC4;
+            border: 1px solid $greyC4;
+            @include transition;
+
+            &[itemType='pomidor'] {
+                color: $red;
+                border: 1px solid $red;
+            }
+
+            &[itemType='pomidor']:hover {
+                color: $darkRed;
+                border: 1px solid $darkRed;
+            }
+
+            &[disabled] {
+                color: $greyC4;
+                border: 1px solid $greyC4;
+                pointer-events: none;
+            }
+
+            &:hover {
+                color: $red;
+                border: 1px solid $red;
+            }
+
+            &:active {
+                color: $white;
+                background-color: $red;
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 500px) {
+    .timerBox {
+        &BtnBox {
+            gap: 20px;
+
+            &StartBtn {
+                padding: 19px 40px;
+            }
+
+            &StopBtn {
+                padding: 19px 40px;
+            }
+        }
+    }
+}

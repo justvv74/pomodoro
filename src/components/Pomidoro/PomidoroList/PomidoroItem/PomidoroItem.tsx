@@ -1,29 +1,24 @@
-import { MouseEvent, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { MouseEvent, useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { IItem } from '../PomidoroList';
 import styles from './PomidoroItem.module.scss';
 import ItemMenu from './ItemMenu/ItemMenu';
-import { setPomidorId } from '../../../../redux/services/pomidoroId';
-import { fetchPomidoroList } from '../../../../redux/services/pomidoro';
-import { AppDispatch } from '@redux/store';
+import { fetchPomidoroList, Pomidoro } from '../../../../redux/services/pomidoro';
 import ThreeDotSvg from '@images/listItem/ThreeDotSvg';
 import { updatePomidorDescription } from '@services/frontend/updateTimerDescr';
-import { AxiosError } from 'axios';
-import { setISystemMessage } from '@redux/services/systemMessage';
 import { timerdescrSchema } from 'src/utils/validationShemas';
 import CheckSvg from '@images/listItem/CheckSvg';
 import CrossSvg from '@images/listItem/CrossSvg';
+import { AppDispatch, RootState } from '@redux/store';
+import { setISystemMessage } from '@redux/services/systemMessage';
+import { fetchTimerById, setCurrentTimer } from '@redux/services/currentTimer';
+import { setPomidoroList } from '@redux/services/pomidoro';
+import { sortPomidoroList } from 'src/utils/sortPomidoroList';
 
 interface IPomidoroItem {
-    item: {
-        id: number;
-        pomidors: number;
-        descr: string;
-        timer_complete: boolean;
-    };
-    list: IItem[];
+    item: Pomidoro;
+    list: Pomidoro[];
 }
 
 interface IFormInputs {
@@ -34,6 +29,7 @@ const PomidoroItem = ({ item, list }: IPomidoroItem) => {
     const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
     const [isEditInputOpen, setIsEditInputOpen] = useState<boolean>(false);
     const [isMouseOverBtn, setIsMouseOverBtn] = useState<boolean>(false);
+
     const dispatch = useDispatch<AppDispatch>();
 
     const {
@@ -53,7 +49,6 @@ const PomidoroItem = ({ item, list }: IPomidoroItem) => {
             await updatePomidorDescription(item.id, data.descr);
             dispatch(fetchPomidoroList());
             setIsEditInputOpen(false);
-            dispatch(setPomidorId(item.id));
         } catch (err) {
             const errorMessage = err instanceof Error && err.message ? err.message : 'Unknown error occurred';
 
@@ -71,8 +66,7 @@ const PomidoroItem = ({ item, list }: IPomidoroItem) => {
             !className.includes('itemMenu') &&
             !isEditInputOpen
         ) {
-            dispatch(setPomidorId(item.id));
-            dispatch(fetchPomidoroList());
+            dispatch(fetchTimerById(item.id));
         }
     };
 
@@ -88,7 +82,7 @@ const PomidoroItem = ({ item, list }: IPomidoroItem) => {
     const handleMouseLeave = () => {
         setIsMouseOverBtn(false);
     };
-    console.log('1111111111111111111', item);
+
     return (
         <li
             key={item.id}

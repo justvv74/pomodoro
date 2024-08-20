@@ -63,3 +63,68 @@
         }
     }
 }
+
+@media screen and (max-width: 500px) {
+    .item {
+        // display: flex;
+        // align-items: center;
+        // justify-content: space-between;
+        gap: 20px;
+
+        &Descr {
+            width: 60%;
+        }
+
+        // &InputBox {
+        //     justify-self: flex-end;
+        //     display: flex;
+        //     justify-content: center;
+        //     gap: 5px;
+        //     width: 40%;
+        // }
+
+        &Value {
+            //     padding: 2px 0;
+            width: 30px;
+            font-size: 18px;
+            //     line-height: 22px;
+            //     text-align: center;
+        }
+
+        &BtnBox {
+            //     display: flex;
+            //     justify-content: center;
+            gap: 5px;
+
+            //     &BtnDown {
+            //         line-height: 0;
+            //         color: $red;
+            //         @include transition;
+            //     }
+
+            //     &BtnDown:hover {
+            //         color: $darkRed;
+            //         transform: scale(1.2);
+            //     }
+
+            //     &BtnDown:active {
+            //         transform: scale(1);
+            //     }
+
+            //     &BtnUp {
+            //         line-height: 0;
+            //         color: $green;
+            //         @include transition;
+            //     }
+
+            //     &BtnUp:hover {
+            //         color: $darkGreen;
+            //         transform: scale(1.2);
+            //     }
+
+            //     &BtnUp:active {
+            //         transform: scale(1);
+            //     }
+        }
+    }
+}

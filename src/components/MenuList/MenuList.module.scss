@@ -25,3 +25,16 @@
         }
     }
 }
+
+@media screen and (max-width: 1024px) {
+    .list {
+        right: 40px;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .list {
+        right: 16px;
+        max-width: 90%;
+    }
+}

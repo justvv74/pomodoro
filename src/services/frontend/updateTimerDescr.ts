@@ -5,7 +5,7 @@ export const updatePomidorDescription = async (id: number, descr: string) => {
         const response = await axios.patch(`/api/timers/${id}/descr`, { descr }, { withCredentials: true });
         return response.data;
     } catch (err) {
-        const errorMessage =
+        const errorMessage: string =
             err instanceof AxiosError && err?.response?.data.message
                 ? err.response.data.message
                 : 'Unknown error occurred';

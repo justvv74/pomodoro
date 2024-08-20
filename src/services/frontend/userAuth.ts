@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 
 export const handleSignIn = async (
     username: string,
@@ -69,6 +69,10 @@ export const logout = async () => {
             withCredentials: true,
         });
     } catch (err) {
-        return new Error('qwe');
+        const errorMessage: string =
+            err instanceof AxiosError && err?.response?.data.message
+                ? err.response.data.message
+                : 'Unknown error occurred 1';
+        throw new Error(errorMessage);
     }
 };

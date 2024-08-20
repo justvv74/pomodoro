@@ -1,0 +1,37 @@
+@import '@styles/var';
+@import '@styles/mixins';
+
+.timerBox {
+    &TimeRow {
+        display: flex;
+        align-items: center;
+        margin-bottom: 25px;
+        gap: 20px;
+
+        &Time {
+            font-size: 150px;
+            font-weight: 400;
+            line-height: 150px;
+            @include transition;
+
+            &[itemType='pomidor'] {
+                color: $red;
+            }
+
+            &[itemType='break'] {
+                color: $green;
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 500px) {
+    .timerBox {
+        &TimeRow {
+            &Time {
+                font-size: 100px;
+                font-weight: 600;
+            }
+        }
+    }
+}

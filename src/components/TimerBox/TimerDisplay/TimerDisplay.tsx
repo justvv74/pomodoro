@@ -1,5 +1,7 @@
 import React from 'react';
-import styles from './TimerBox.module.scss';
+import styles from './TimerDisplay.module.scss';
+import { SECONDS_IN_MINUTE } from 'src/utils/systemData';
+import withPreventRerender from 'src/utils/hoc/withPreventRerender';
 
 interface TimerDisplayProps {
     timer: number;
@@ -17,4 +19,4 @@ const TimerDisplay: React.FC<TimerDisplayProps> = ({ timer, itemType }) => {
     );
 };
 
-export default TimerDisplay;
+export default withPreventRerender(TimerDisplay);

@@ -9,6 +9,7 @@ import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import logo from '@images/loginLogo.png';
 import { authSchema } from 'src/utils/validationShemas';
+import { handleResponseMessage } from 'src/utils/authUtils';
 
 interface IFormInput {
     username: string;
@@ -42,26 +43,7 @@ const Auth = () => {
         if (code === 200) {
             router.push('/');
         } else {
-            handleResponseMessage(code);
-        }
-    };
-
-    const handleResponseMessage = (code: number) => {
-        switch (code) {
-            case 400:
-                setResError('Неизвестная ошибка сервера, попробуйте позже');
-                break;
-            case 409:
-                setResError('Пользователь уже зарегистрирован, выполните вход');
-                break;
-            case 401:
-                setResError('Неправильный логин или пароль!');
-                break;
-            case 500:
-                setResError('Неизвестная ошибка сервера, попробуйте позже');
-                break;
-            default:
-                break;
+            handleResponseMessage(code, setResError);
         }
     };
 

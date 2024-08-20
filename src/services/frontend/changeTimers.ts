@@ -6,7 +6,7 @@ export const increasePomidorCount = async (id: number) => {
             withCredentials: true,
         });
     } catch (err) {
-        const errorMessage =
+        const errorMessage: string =
             err instanceof AxiosError && err?.response?.data.message
                 ? err.response.data.message
                 : 'Unknown error occurred';
@@ -20,7 +20,7 @@ export const decreasePomidorCount = async (id: number) => {
             withCredentials: true,
         });
     } catch (err) {
-        const errorMessage =
+        const errorMessage: string =
             err instanceof AxiosError && err?.response?.data.message
                 ? err.response.data.message
                 : 'Unknown error occurred';
@@ -34,7 +34,7 @@ export const deletePomidor = async (id: number) => {
             withCredentials: true,
         });
     } catch (err) {
-        const errorMessage =
+        const errorMessage: string =
             err instanceof AxiosError && err?.response?.data.message
                 ? err.response.data.message
                 : 'Unknown error occurred';

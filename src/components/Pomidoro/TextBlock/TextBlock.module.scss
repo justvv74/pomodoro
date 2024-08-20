@@ -1,3 +1,6 @@
+@import '@styles/var';
+@import '@styles/mixins';
+
 .textbox {
     margin-bottom: 25px;
 
@@ -10,11 +13,32 @@
 
     &List {
         list-style: inside;
-        color: var(--red);
     }
 
     &Item {
         line-height: 33px;
-        color: var(--black);
+        color: $black;
+    }
+}
+
+@media screen and (max-width: 1024px) {
+    .textbox {
+        &Title {
+            margin-bottom: 10px;
+            font-size: 20px;
+            line-height: 28px;
+        }
+
+        &List {
+            display: flex;
+            flex-direction: column;
+            gap: 7px;
+        }
+
+        &Item {
+            font-size: 15px;
+            line-height: 20px;
+            color: $black;
+        }
     }
 }

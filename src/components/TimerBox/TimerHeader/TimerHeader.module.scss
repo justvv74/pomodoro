@@ -1,0 +1,40 @@
+@import '@styles/var';
+@import '@styles/mixins';
+
+.timerBox {
+    &Header {
+        display: flex;
+        justify-content: space-between;
+        padding: 19px 40px;
+        color: $white;
+        background-color: $greyC4;
+        @include transition;
+
+        &[itemType='pomidor'] {
+            background-color: $red;
+        }
+
+        &[itemType='break'] {
+            background-color: $green;
+        }
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .timerBox {
+        &Header {
+            padding: 19px 20px;
+        }
+    }
+}
+
+@media screen and (max-width: 500px) {
+    .timerBox {
+        &Header {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            padding: 16px;
+        }
+    }
+}

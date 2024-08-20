@@ -1,21 +1,22 @@
 import { NextApiResponse } from 'next';
-import { createTimer } from '@services/backend/timerService';
+import { getTimer } from '@services/backend/timerService';
 import { auth } from '@middleware/auth';
-import { AuthenticatedNextApiRequest } from '../../../types/middleware';
+import { AuthenticatedNextApiRequest } from '../../../../types/middleware';
 
 const handler = async (req: AuthenticatedNextApiRequest, res: NextApiResponse) => {
-    if (req.method === 'POST') {
+    if (req.method === 'GET') {
         try {
-            const user = req.user;
-            const pomidorId = await createTimer(user.id, req.body);
+            const pomidorId = Number(req.query.id);
 
-            res.status(201).json(pomidorId[0]);
+            const timer = await getTimer(pomidorId);
+
+            res.status(200).json(timer);
         } catch (err) {
             const errorMessage = err instanceof Error ? err.message : 'Unknown error occurred';
             res.status(400).json({ message: errorMessage });
         }
     } else {
-        res.setHeader('Allow', ['POST']);
+        res.setHeader('Allow', ['GET']);
         res.status(405).json({ message: `Method ${req.method} Not Allowed` });
     }
 };
