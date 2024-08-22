@@ -95,7 +95,7 @@ export const fetchTimerById = createAsyncThunk<ICurrentTimerData, number>(
     async (id, { rejectWithValue, dispatch }) => {
         try {
             dispatch(setManualLoading(true));
-            const response = await axios.get<ICurrentTimerData>(`http://localhost:3000/api/timers/${id}/get`, {
+            const response = await axios.get<ICurrentTimerData>(`/api/timers/${id}/get`, {
                 withCredentials: true,
             });
 
