@@ -27,8 +27,10 @@ export const useItemMenuLogic = (
             }
         } catch (err) {
             const errorMessage =
-                err instanceof AxiosError && err.response ? err.response.data.message : 'Unknown error occurred';
-            dispatch(setISystemMessage(errorMessage.message));
+                (err instanceof AxiosError &&
+                    ((err.response && err.response.data.message) || err.message || 'Unknown error occurred')) ||
+                'Unknown error occurred';
+            dispatch(setISystemMessage(errorMessage));
         }
     };
 
@@ -42,8 +44,9 @@ export const useItemMenuLogic = (
             }
         } catch (err) {
             const errorMessage =
-                err instanceof AxiosError && err.response ? err.response.data.message : 'Unknown error occurred';
-            dispatch(setISystemMessage(errorMessage.message));
+                (err instanceof AxiosError &&
+                    ((err.response && err.response.data.message) || err.message || 'Unknown error occurred')) ||
+                'Unknown error occurred';
         }
     };
 
@@ -55,8 +58,9 @@ export const useItemMenuLogic = (
             onClose();
         } catch (err) {
             const errorMessage =
-                err instanceof AxiosError && err.response ? err.response.data.message : 'Unknown error occurred';
-            dispatch(setISystemMessage(errorMessage.message));
+                (err instanceof AxiosError &&
+                    ((err.response && err.response.data.message) || err.message || 'Unknown error occurred')) ||
+                'Unknown error occurred';
         }
     };
 

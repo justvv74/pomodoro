@@ -102,10 +102,10 @@ export const fetchTimerById = createAsyncThunk<ICurrentTimerData, number>(
             return response.data;
         } catch (err) {
             const errorMessage =
-                err instanceof AxiosError && err.response
-                    ? err.response.data.message || 'Unknown error occurred'
-                    : 'Unknown error occurred';
-            dispatch(setISystemMessage(errorMessage.message));
+                err instanceof AxiosError &&
+                ((err.response && err.response.data.message) || err.message || 'Unknown error occurred');
+            dispatch(setISystemMessage(errorMessage));
+
             return rejectWithValue(errorMessage);
         } finally {
             dispatch(setManualLoading(false));

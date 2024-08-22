@@ -36,10 +36,8 @@ export const getUserDataAsync = createAsyncThunk<IUserData, void, { state: RootS
             return result.data;
         } catch (err) {
             const errorMessage =
-                err instanceof AxiosError && err.response
-                    ? err.response.data.message || 'Unknown error occurred'
-                    : 'Unknown error occurred';
-
+                err instanceof AxiosError &&
+                ((err.response && err.response.data.message) || err.message || 'Unknown error occurred');
             dispatch(setISystemMessage(errorMessage));
             return rejectWithValue(errorMessage || 'Unknown error');
         }
